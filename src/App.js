@@ -1,13 +1,22 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+
+import "./normalize.css";
+import "./skeleton.css";
 import "./App.css";
+
+import Spinner from "./Spinner/Spinner";
+import Analyzer from "./Analyzer";
+
+const API_URI = process.env["REACT_APP_LAMBDA_URI"];
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      text: ""
+      text: "",
+      results: [],
+      loading: false
     };
 
     this.analyzeText = this.analyzeText.bind(this);
@@ -15,7 +24,12 @@ class App extends Component {
   }
 
   analyzeText() {
-    console.log(this.state.text);
+    this.setState({
+      loading: true
+    });
+    fetch(API_URI + "?text=" + this.state.text)
+      .then(response => response.json())
+      .then(results => this.setState({ loading: false, results: results }));
   }
 
   updateText(e) {
@@ -28,7 +42,12 @@ class App extends Component {
     return (
       <div className="App">
         <textarea value={this.state.text} onChange={this.updateText} />
-        <button onClick={this.analyzeText} value="Analyze" />
+        <Analyzer results={this.state.results} />
+        {this.state.loading ? (
+          <Spinner />
+        ) : (
+          <button onClick={this.analyzeText}>Analyze</button>
+        )}
       </div>
     );
   }

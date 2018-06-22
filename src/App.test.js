@@ -21,3 +21,32 @@ it("updates the text area", () => {
 
   ReactDOM.unmountComponentAtNode(div);
 });
+
+it("updates the text area", () => {
+  const div = document.createElement("div");
+  ReactDOM.render(<App />, div);
+
+  global.fetch = jest.fn().mockImplementation(() =>
+    Promise.resolve({
+      json: () => ["he-llo", "world"]
+    })
+  );
+
+  updateText(div, "hello world");
+  const button = div.querySelector("button");
+  ReactTestUtils.Simulate.click(button);
+
+  // Give the fetch promise a chance to resolve before unmounting.
+  return new Promise(resolve =>
+    process.nextTick(() => {
+      ReactDOM.unmountComponentAtNode(div);
+      resolve();
+    })
+  );
+});
+
+function updateText(div, text) {
+  const textarea = div.querySelector("textarea");
+  textarea.value = text;
+  ReactTestUtils.Simulate.change(textarea);
+}
