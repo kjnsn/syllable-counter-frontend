@@ -21,15 +21,26 @@ class App extends Component {
 
     this.analyzeText = this.analyzeText.bind(this);
     this.updateText = this.updateText.bind(this);
+    this.onKeyPressed = this.onKeyPressed.bind(this);
   }
 
   analyzeText() {
+    if (this.state.loading) {
+      return;
+    }
+
     this.setState({
       loading: true
     });
     fetch(API_URI + "?text=" + this.state.text)
       .then(response => response.json())
       .then(results => this.setState({ loading: false, results: results }));
+  }
+
+  onKeyPressed(e) {
+    if (e.key === "Enter") {
+      this.analyzeText();
+    }
   }
 
   updateText(e) {
@@ -41,7 +52,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <textarea value={this.state.text} onChange={this.updateText} />
+        <input
+          value={this.state.text}
+          onChange={this.updateText}
+          onKeyPress={this.onKeyPressed}
+        />
         <Analyzer results={this.state.results} />
         {this.state.loading ? (
           <Spinner />

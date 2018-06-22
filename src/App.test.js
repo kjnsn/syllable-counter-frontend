@@ -13,16 +13,16 @@ it("updates the text area", () => {
   const div = document.createElement("div");
   ReactDOM.render(<App />, div);
 
-  const textarea = div.querySelector("textarea");
+  const textarea = div.querySelector("input");
   textarea.value = "hello world";
   ReactTestUtils.Simulate.change(textarea);
 
-  expect(div.querySelector("textarea").innerHTML).toEqual("hello world");
+  expect(div.querySelector("input").value).toEqual("hello world");
 
   ReactDOM.unmountComponentAtNode(div);
 });
 
-it("updates the text area", () => {
+it("Analyzes the text", () => {
   const div = document.createElement("div");
   ReactDOM.render(<App />, div);
 
@@ -46,7 +46,7 @@ it("updates the text area", () => {
 });
 
 function updateText(div, text) {
-  const textarea = div.querySelector("textarea");
+  const textarea = div.querySelector("input");
   textarea.value = text;
   ReactTestUtils.Simulate.change(textarea);
 }
