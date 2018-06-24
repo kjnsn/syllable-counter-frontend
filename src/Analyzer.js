@@ -8,6 +8,6 @@ const countSyllables = results => {
     .reduce((a, b) => a + b, 0);
 };
 
-const Analyzer = props => <div>{countSyllables(props.results || [])}</div>;
+const Analyzer = props => <span>{countSyllables(props.results || [])}</span>;
 
 export default Analyzer;

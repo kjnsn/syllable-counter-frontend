@@ -51,18 +51,32 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <input
-          value={this.state.text}
-          onChange={this.updateText}
-          onKeyPress={this.onKeyPressed}
-        />
-        <Analyzer results={this.state.results} />
-        {this.state.loading ? (
-          <Spinner />
-        ) : (
-          <button onClick={this.analyzeText}>Analyze</button>
-        )}
+      <div className="App container">
+        <div className="row">
+          <h5>
+            Syllable Counter: counts the number of syllables in a sentence
+          </h5>
+        </div>
+        <div className="row">
+          <input
+            placeholder="Enter text here"
+            value={this.state.text}
+            onChange={this.updateText}
+            onKeyPress={this.onKeyPressed}
+          />
+        </div>
+        <div className="row">
+          <span>
+            Syllables: <Analyzer results={this.state.results} />
+          </span>
+        </div>
+        <div className="row">
+          {this.state.loading ? (
+            <Spinner />
+          ) : (
+            <button onClick={this.analyzeText}>Analyze</button>
+          )}
+        </div>
       </div>
     );
   }
