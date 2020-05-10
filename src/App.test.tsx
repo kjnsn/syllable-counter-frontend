@@ -26,7 +26,7 @@ it("Analyzes the text", () => {
   const div = document.createElement("div");
   ReactDOM.render(<App />, div);
 
-  global.fetch = jest.fn().mockImplementation(() =>
+  (global as any).fetch = jest.fn().mockImplementation(() =>
     Promise.resolve({
       json: () => ["he-llo", "world"]
     })
