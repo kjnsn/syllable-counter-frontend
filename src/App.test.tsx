@@ -14,10 +14,10 @@ it("updates the text area", () => {
   ReactDOM.render(<App />, div);
 
   const textarea = div.querySelector("input");
-  textarea.value = "hello world";
-  ReactTestUtils.Simulate.change(textarea);
+  textarea!.value = "hello world";
+  ReactTestUtils.Simulate.change(textarea!);
 
-  expect(div.querySelector("input").value).toEqual("hello world");
+  expect(div.querySelector("input")!.value).toEqual("hello world");
 
   ReactDOM.unmountComponentAtNode(div);
 });
@@ -28,16 +28,16 @@ it("Analyzes the text", () => {
 
   (global as any).fetch = jest.fn().mockImplementation(() =>
     Promise.resolve({
-      json: () => ["he-llo", "world"]
+      json: () => ["he-llo", "world"],
     })
   );
 
   updateText(div, "hello world");
-  const button = div.querySelector("button");
+  const button = div.querySelector("button")!;
   ReactTestUtils.Simulate.click(button);
 
   // Give the fetch promise a chance to resolve before unmounting.
-  return new Promise(resolve =>
+  return new Promise<void>((resolve) =>
     process.nextTick(() => {
       ReactDOM.unmountComponentAtNode(div);
       resolve();
@@ -45,8 +45,8 @@ it("Analyzes the text", () => {
   );
 });
 
-function updateText(div, text) {
-  const textarea = div.querySelector("input");
+function updateText(div: HTMLDivElement, text: string) {
+  const textarea = div.querySelector("input")!;
   textarea.value = text;
   ReactTestUtils.Simulate.change(textarea);
 }
